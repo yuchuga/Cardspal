@@ -30,8 +30,13 @@ const handleExport = () => {
 
   const result = newConfigs.map(item => flat.flatten(item))
   const config = { quotes: true, columns: headers} 
-  const csvData = jsonToCSV(result, config)
-  exportCSV(csvData, `FwdSpread.csv`)
+  const csvData = jsonToCSV(result, config) //react-papaparse
+  exportCSV(csvData, 'FwdSpread.csv')
+  /* const csv = Papa.unparse(data, config) //papaparse
+  const fields = ['ID', 'Title', 'Description'] 
+  const csv = Papa.unparse({ data, fields })
+  exportCSV(csv, 'filename.csv')
+  */
 };
 
 

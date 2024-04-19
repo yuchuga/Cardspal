@@ -8,7 +8,7 @@ const ComponentA = () => {
   
   return (
     <UserContext.Provider value={user}>
-      <Component />
+      <ComponentB />
     </UserContext.Provider>
   )
 }

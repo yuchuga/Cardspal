@@ -857,7 +857,7 @@ const PaymentCheckoutScreen = (props) => {
           <View style={{ backgroundColor: "#fff", borderRadius: 12, marginHorizontal: wd.width * 0.05 }}>
             <Image style={{ height: 140, width: 170, marginTop: -45, marginLeft: 30, resizeMode: "contain", alignSelf: 'center' }} source={require('../../assets/mascotImages/oopsGuy.png')} />
             <Text style={[{ ...theme.LHBLACK18, fontFamily: FontFamily.Rubik}, { paddingHorizontal: 30, textAlign: "center", lineHeight: 22 }]}>Payment is still being processed</Text>
-            <Text style={[{ ...theme.LRGREY14, fontFamily: FontFamily.Rubik}, { paddingHorizontal: 30, marginTop: 10, textAlign: "center", lineHeight: 22 }]}>Please check back on the status under “Profile > Payment & Transactions” later.</Text>
+            <Text style={[{ ...theme.LRGREY14, fontFamily: FontFamily.Rubik}, { paddingHorizontal: 30, marginTop: 10, textAlign: "center", lineHeight: 22 }]}>Please check back on the status under “Profile Payment & Transactions” later.</Text>
             <TouchableOpacity
               activeOpacity={0.8} onPress={() => { _onPopupSuccessClicked(true); }}
               style={{ backgroundColor: Colors.Primary, borderRadius: 8, height: 48, padding: 10 ,paddingVertical: 6, marginVertical: 25, alignSelf: 'center' }}

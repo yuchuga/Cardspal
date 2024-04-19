@@ -25,7 +25,7 @@ const { name, age, ...rest } = person
 // console.log(rest)
 
 //concat 2 objects
-const person3 = {...person, ...person2}
+const person3 = {...person, ...person2} //overwrite values
 // console.log(person3)
 
 const printUser = ({ name, age, food = 'Watermelon' }) => {

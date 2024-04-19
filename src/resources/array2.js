@@ -100,9 +100,9 @@ console.log(months)
 const newMonths = months.slice(1, 3) 
 console.log(newMonths)
 
-/* Find missing number in array size N using arithmetic progression formula n(n+1)/2 */
+/* Find missing number in array in range of [1, N] using arithmetic progression formula n(n+1)/2 */
 const findMissingNumber = (array, length) => {
-  let result = Math.floor((length + 1) * (length + 2) / 2) 
+  let result = Math.floor((length + 1) * (length + 2) / 2) //36
   for (let i = 0; i < length; i++) {
     result -= array[i]
   }
@@ -117,6 +117,5 @@ const findMissingNumber2 = (array) => {
 };
 
 const array1 = [1, 2, 4, 6, 3, 7, 8]
-const missingNumber = findMissingNumber2(array1)
-// console.log('missingNumber', missingNumber) //5
-
+const missingNumber = findMissingNumber(array1, array1.length)
+console.log('missingNumber', missingNumber) //5

@@ -3,6 +3,7 @@ export const NAME_REGEX = /^[^0-9~`!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]*$/
 export const PHONE_REGEX = /\+|(\d+)$/
 export const MASKNAME_REGEX = /\B[a-z]/g
 export const MASKEMAIL_REGEX = /(\w{1})[\w.-]+@([\w.]+\w)/
+export const NRIC_REGEX = /.(?=.{4})/g
 export const MARKETING_TEXT = `I wish to receive marketing materials (such as news on other exciting events) from the organisers, 
  and consent to the disclosure of my personal data to the organiser for such purpose.`
 export const TERMS = 'https://cardspal.com/ticket-sales-terms-and-conditions/'
