@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Button, Container, Spinner } from 'reactstrap';
 import { fromUnixTime, format, parseISO } from 'date-fns';
 import styled from 'styled-components';
-import Icon from '../../assets/avatar/plan-avatar-checkin.png';
+import Icon from '../../assets/images/plan-avatar-checkin.png';
 //custom components
 import RedeemModal from './RedeemModal';
 import RedeemLandingModal from './RedeemLandingModal';

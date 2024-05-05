@@ -1,21 +1,19 @@
-import { isFuture, isPast, differenceInDays, format, sub, fromUnixTime } from 'date-fns'
+import amplitude from 'amplitude-js'
+import Geohash from 'latlon-geohash'
+import { Storage } from 'aws-amplify'
+import { generateCsv } from 'export-to-csv'
+import { STRIPE_BUTTON_LABEL, STRIPE_STATUS } from './constants'
 import { listVouchersByDealId } from  '../../src/helpers/GraphQL/voucherMaster'
-// import amplitude from 'amplitude-js'
-// import Geohash from 'latlon-geohash'
-// import { Storage } from 'aws-amplify'
-// import { ExportToCsv } from 'export-to-csv';
-// import constant
-// import { STRIPE_BUTTON_LABEL, STRIPE_STATUS } from  './constants'
-// import helpers
-// import { getEnv } from 'helpers/apiHelper';
-// import { getUser } from 'helpers/GraphQL/user';
+import { isFuture, isPast, differenceInDays, format, sub, fromUnixTime } from 'date-fns'
+// import { getEnv } from 'helpers/apiHelper'
+// import { getUser } from 'helpers/GraphQL/user'
 
 export const guidGenerator = () => {
   const S4 = function () {
     return (((1 + Math.random()) * 0x10000) | 0).toString(16).substring(1);
   };
   return (S4() + S4() + "-" + S4() + "-" + S4() + "-" + S4() + "-" + S4() + S4() + S4());
-} 
+};
 
 export const formatDateTime = (timestamp, form=null) => {
   try {
@@ -25,18 +23,18 @@ export const formatDateTime = (timestamp, form=null) => {
   } catch (error) {
     return '-'
   }
-}
+};
 
 export const isDealExpiring = (endTimestamp) => {
-    try {
-      const dt = new Date(endTimestamp)
-      const temp = sub(dt, {days:7})
-      return Date.now() >= temp
-    } catch (error) {
-      console.log(error)
-      return false
-    }
-}
+  try {
+    const dt = new Date(endTimestamp)
+    const temp = sub(dt, {days:7})
+    return Date.now() >= temp
+  } catch (error) {
+    console.log(error)
+    return false
+  }
+};
 
 export const formatBytes = (bytes, decimals = 2) => {
   if (bytes === 0) return "0 Bytes"
@@ -46,15 +44,13 @@ export const formatBytes = (bytes, decimals = 2) => {
 
   const i = Math.floor(Math.log(bytes) / Math.log(k))
   return parseFloat((bytes / Math.pow(k, i)).toFixed(dm)) + " " + sizes[i]
-}
+};
 
 export const getAssetUrl = async (path) => {
-  const env = getEnv()
-  return `https://assets.${env}.cardspal.com/public/${path}`
-}
+  // const env = getEnv()
+  // return `https://assets.${env}.cardspal.com/public/${path}`
+};
 
-// this will return a list of items not in parentList
-// list1 will be the parent list should contain the initial list
 export const listDifference = (parentList, childList) => {
   const removeItemsFromParent = parentList.filter(o => childList.indexOf(o) === -1)
   const addedItemsToParent = childList.filter(o => parentList.indexOf(o) === -1)
@@ -63,7 +59,7 @@ export const listDifference = (parentList, childList) => {
     removeItemsFromParent,
     addedItemsToParent
   }
-}
+};
 
 export const capitalizeFirstLetter = (string) => {
   try{
@@ -72,7 +68,7 @@ export const capitalizeFirstLetter = (string) => {
   } catch (e) {
     return string
   }
-}
+};
 
 export const getOutletName = (item, outlets) => {
   try {
@@ -90,12 +86,12 @@ export const getOutletName = (item, outlets) => {
     console.error(error)
     return '-'
   }
-}
+};
 
 export const amplitudeUserProperty = (property, value) => {
   var identify = new amplitude.Identify().set(property, value);
   amplitude.getInstance().identify(identify);
-}
+};
 
 export const delay = ms => new Promise(res => setTimeout(res, ms));
 
@@ -109,29 +105,25 @@ export const updateGeohash = (item) => {
     console.error('error on updateGeohash', error)
     throw error
   }
-}
+};
 
 export const handleImageUpload = async (path, croppedImages, options) => {
-    try {
-      if (croppedImages && croppedImages.blob) {
-        try {
-            croppedImages.blob.name = path
-        } catch (e){
-          // ignore error as dropzone library down not allow change of file
-        }
-        let result
-        if (options) {
-          result = await Storage.put(path, croppedImages.blob, {level: "private"})
-        } else {
-          result = await Storage.put(path, croppedImages.blob)
-        }
-        console.debug('file uploaded to S3', result, croppedImages.blob.name)
+  try {
+    let result
+    if (croppedImages && croppedImages.blob) {
+      croppedImages.blob.name = path
+      if (options) {
+        result = await Storage.put(path, croppedImages.blob, {level: "private"})
+      } else {
+        result = await Storage.put(path, croppedImages.blob)
       }
-    } catch (error) {
-      console.error('error on handleImageUpload ', error)
-      throw error
+      console.debug('file uploaded to S3', result, croppedImages.blob.name)
     }
-}
+  } catch (error) {
+    console.error('error on handleImageUpload ', error)
+    throw error
+  }
+};
 
 export const generatePromoCodes = async (total, prefix='CP') => {
   var S4 = function () {
@@ -143,10 +135,10 @@ export const generatePromoCodes = async (total, prefix='CP') => {
     codes.push(prefix + S4() + S4())
   }
   return codes
-}
+};
 
 export const convertToCSV = (data, filename) => {
-  const options = { 
+  const config = { 
     fieldSeparator: ',',
     quoteStrings: '"',
     decimalSeparator: '.',
@@ -158,10 +150,9 @@ export const convertToCSV = (data, filename) => {
     useKeysAsHeaders: true,
     filename: filename
   };
-    
-  const csvExporter = new ExportToCsv(options);
-  csvExporter.generateCsv(data);
-}
+  const csv = generateCsv(config)(data);
+  return csv
+};
 
 export const validateVoucherCodes = (codes) => {
   let _codes = []
@@ -187,7 +178,7 @@ export const validateVoucherCodes = (codes) => {
     _codes.push(code)
   }
   return _codes
-}
+};
 
 export const isValidHttpUrl = (string) => {
   let url; 
@@ -198,7 +189,7 @@ export const isValidHttpUrl = (string) => {
   }
 
   return url.protocol === "http:" || url.protocol === "https:";
-}
+};
 
 export const isValidURL = (string) => {
   var pattern = new RegExp('^(https?:\\/\\/)?'+ // protocol
@@ -208,7 +199,7 @@ export const isValidURL = (string) => {
     '(\\?[;&a-z\\d%_.~+=-]*)?'+ // query string
     '(\\#[-a-z\\d_]*)?$','i'); // fragment locator
   return !!pattern.test(string);
-}
+};
 
 export const evaluateStripeStatus = (stripeAccount) => {
   let status
@@ -228,7 +219,7 @@ export const evaluateStripeStatus = (stripeAccount) => {
       buttonLabel = STRIPE_BUTTON_LABEL.CONNECT_TO_STRIPE
   }
   return {status, buttonLabel}
-}
+};
 
   export const getPromotionTotals = (promotions) => {
     try {
@@ -262,7 +253,7 @@ export const evaluateStripeStatus = (stripeAccount) => {
       console.error('error on getPromotionTotals ', error)
       throw error
     }
-  }
+  };
 
   export const getVoucherTotals = async (purchasableDeals) => {
     try {
@@ -302,16 +293,16 @@ export const evaluateStripeStatus = (stripeAccount) => {
       console.error('error on getVoucherTotals ', error)
       throw error
     }
-}
+};
 
-  export const computeSoldVouchers = (voucherCodes) => {
-    const total = voucherCodes.length
-    let sold = 0
-    voucherCodes.forEach(item => {
-      if (item.userId && item.status !== "2") sold += 1
-    })
-    return {sold, total}
-  }
+export const computeSoldVouchers = (voucherCodes) => {
+  const total = voucherCodes.length
+  let sold = 0
+  voucherCodes.forEach(item => {
+    if (item.userId && item.status !== "2") sold += 1
+  })
+  return {sold, total}
+};
 
 export const getHashVersion = async (endPoint) => {
   let data = ''
@@ -321,33 +312,34 @@ export const getHashVersion = async (endPoint) => {
       data = await response.text();
   }
   return data
-}
+};
 
 export const RemoveFreeTrial = async(userInfo) => {
-  let user = await getUser(userInfo.email)
-  let removeDate = new Date('July 01 2022') //remove free trial from this date for new user registration
-  let createdAt = user.createdAt
-  let createdDate =  new Date(createdAt.substring(0, 10) + ' 00:00')
-  let diff = getDateDiff(removeDate, createdDate)
+  // let user = await getUser(userInfo.email)
+  // let removeDate = new Date('July 01 2022') 
+  // let createdAt = user.createdAt
+  // let createdDate =  new Date(createdAt.substring(0, 10) + ' 00:00')
+  // let diff = getDateDiff(removeDate, createdDate)
 
-  if (diff <=0 && user.subPlan === 'free'){
-    return true
-  } else {
-    return false
-  }
-}
+  // if (diff <=0 && user.subPlan === 'free'){
+  //   return true
+  // } else {
+  //   return false
+  // }
+};
 
 export const getDateDiff = (removeDate, createdDate) => {
   var Diff = Math.floor((removeDate.getTime() - createdDate.getTime()) / (1000 * 60 * 60 * 24));
   return Diff
-}
+};
 
-export const parseQueryString = (queryString) => 
-queryString
-  .replace('?', '')
-  .split('&')
-  .map(param => param.split('='))
-  .reduce((values, [ key, value ]) => {
-    values[ key ] = value
-    return values
-  }, {})
+export const parseQueryString = (queryString) => (
+  queryString
+    .replace('?', '')
+    .split('&')
+    .map(param => param.split('='))
+    .reduce((values, [ key, value ]) => {
+      values[ key ] = value
+      return values
+    }, {})
+)

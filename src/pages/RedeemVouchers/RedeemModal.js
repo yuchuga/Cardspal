@@ -1,12 +1,11 @@
-import React, { useState } from 'react';
-import { useSelector } from "react-redux";
-import { Button, Modal, CloseButton } from 'react-bootstrap';
-import styled from 'styled-components';
-import Icon from '../../assets/avatar/plan-avatar-checkin.png';
-// custom components
-import { createScanHistoryEntries, getScanHistoryByVoucherId, updateScanHistoryEntries } from '../../helpers/GraphQL/scanHistory';
+import React, { useState } from 'react'
+import { useSelector } from "react-redux"
+import { Button, Modal, CloseButton } from 'react-bootstrap'
+import styled from 'styled-components'
+import Icon from '../../assets/images/plan-avatar-checkin.png'
+import { createScanHistoryEntries, getScanHistoryByVoucherId, updateScanHistoryEntries } from '../../helpers/GraphQL/scanHistory'
 
-const RedeemModal = (props) => { //destructure props using ({data, scanData, show}) 
+const RedeemModal = (props) => { 
 
   const result = props.data;
   const user = useSelector(state => state.User.user)

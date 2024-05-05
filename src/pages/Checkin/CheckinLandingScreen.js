@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import platform from 'platform'
 import styled from 'styled-components'
-import Icon from '../../assets/avatar/plan-avatar-checkin.png'
-import Icon2 from '../../assets/banner/checkin-banner.png'
+import Icon from '../../assets/images/plan-avatar-checkin.png'
+import Icon2 from '../../assets/images/checkin-banner.png'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { Button, Container } from 'reactstrap'
 import { MASKNAME_REGEX, MASKEMAIL_REGEX, APP_STORE, PLAY_STORE } from '../../utils/constants'
@@ -19,7 +19,7 @@ const CheckinLandingScreen = () => {
   }, []); //eslint-disable-line
 
   const handleClick = (ticket) => {
-    navigate(`/checkin/${ticket.masterId}`, {state: { ticket }})
+    navigate(`/checkin/${ticket.masterId}`, { state: { ticket }  })
   };
 
   const getConfirmationId = (ticket) => {

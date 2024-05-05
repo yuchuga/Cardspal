@@ -32,3 +32,7 @@ export const WEBFORM_ID = "0001"
 export const MERCHANT_TEXT = 'This feature is only available for merchants hosting or selling event tickets'
 export const PARTNERSHIP_TEXT = 'If you wish to host/sell event tickets, please contact our partnership team at'
 export const PARTNERSHIP_EMAIL = 'mailto:partnership@cardspal.com'
+
+//STRIPE
+export const STRIPE_BUTTON_LABEL = ''
+export const STRIPE_STATUS = ''

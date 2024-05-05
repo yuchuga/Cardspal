@@ -11,11 +11,12 @@ import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { ErrorMessage } from '@hookform/error-message'
 import { getWebFormGroup, getPeopleInWebForm } from '../.././helpers/apiHelper'
+import { GROUP_NAME_REGEX } from '../../utils/constants'
 
 const DnD = () => {
   const [searchParams] = useSearchParams()
   const userId = searchParams.get('userId')
-  console.log('userId', userId)
+  // console.log('userId', userId)
 
   const schema = Yup.object().shape({
     email: Yup.string()
@@ -45,7 +46,7 @@ const DnD = () => {
     dress: '',
     transport: '',
     terms: false
-  }
+  };
 
   const menuData = [ 
     { value: 'Fusion', label: 'Fusion' },
@@ -53,21 +54,22 @@ const DnD = () => {
   ];
   
   const [state] = useState(initialValues)
+  const [, setUserId] = useState('')
   const [creator, setCreator] = useState('')
   const [selectGroup, setSelectGroup] = useState('')
   const [selectMenu, setSelectMenu] = useState('')
-  const [, setUserId] = useState('')
   const [groupData, setGroupData] = useState([])
-  const [peopleInGroup, setPeopleInGroup] =  useState([])
+  const [peopleInGroup, setPeopleInGroup] = useState([])
   const [arrGroup, setArrGroup] = useState([])
 
+  const [, setIsIndividual] = useState(false)
   const [showAll, setShowAll] = useState(false)
   const [showBoth, setShowBoth] = useState(false)
   const [isMatch, setIsMatch] = useState(false)
   const [disableField, setDisableField] = useState(false)
+  const [groupNameDropdown, setGroupNameDropdown] = useState(false)
   const [groupNameDropdownError, setGroupNameDropdownError] = useState(false)
   const [menuDropdownError, setMenuDropdownError] = useState(false)
-  const [, setIsIndividual] = useState(false)
 
   useEffect(() => {
     // getGroup() 
@@ -76,7 +78,7 @@ const DnD = () => {
 
   const getQuery = () => {
     setUserId('userId', userId)
-  }
+  };
   
   const getGroup = async () => {
     let getGroup = await getWebFormGroup(Constants.CATEGORY_DND, userId)
@@ -128,7 +130,7 @@ const DnD = () => {
       setOption(group, dress)
       getCreator(group)
     }
-  }
+  };
 
   const handleGroupChange = (item) => {
     setSelectGroup(item)
@@ -148,13 +150,13 @@ const DnD = () => {
     } 
     setGroupNameDropdownError(false)
     setMenuDropdownError(false)
-  }
+  };
 
   const handleMenuChange = (selectMenu) => {
     setSelectMenu(selectMenu)
     setValue('menu', selectMenu.value)
     setMenuDropdownError(false)
-  }
+  };
 
   const matchGroupName = () => {
     const values = getValues();
@@ -165,14 +167,14 @@ const DnD = () => {
     })
 
     return matchGroup.length > 0 ? true : false
-  }
+  };
 
   const getCreator = (groupName) => {
     let group = arrGroup.filter(item => {
       return item.name === groupName
     })
     setCreator(group[0].createdBy)
-  }
+  };
 
   const setOption = (groupName, dress) => {
     if (groupName.trim() === Constants.INDIVIDUAL_FUSION) {
@@ -338,7 +340,7 @@ const DnD = () => {
             (creator ?
             <GroupP>Only {peopleInGroup.length} people are in this group now. You have to stick to the option selected by {creator}, the original creator for this group</GroupP>
             :
-            <GroupP>{GROUP_NOTE}</GroupP>
+            <GroupP>{Constants.GROUP_NOTE}</GroupP>
             )
           }
         </FormField>
@@ -352,7 +354,7 @@ const DnD = () => {
               placement='right'
               target='third'
             >
-            <p style={{ textAlign: 'left', marginBottom: 0 }}>{GROUP_ENTRY}</p>
+            <p style={{ textAlign: 'left', marginBottom: 0 }}>{Constants.GROUP_ENTRY}</p>
             </UncontrolledTooltip>
           </Form.Label>
           <Form.Control  
@@ -376,14 +378,14 @@ const DnD = () => {
         
         <FormField>
           <Form.Label>Menu Choice<sup>*</sup>
-          {selectGroup.value !== OTHER_OPTION  && 
+          {selectGroup.value !== Constants.OTHER_OPTION  && 
             <span>
               <ToolTipIcon id='fourth' />
               <UncontrolledTooltip
                 placement='right'
                 target='fourth'
               >
-              {MENU}
+              {Constants.MENU}
               </UncontrolledTooltip>
             </span>}
           </Form.Label>
@@ -418,7 +420,7 @@ const DnD = () => {
               placement='right'
               target='tooltip'
             >
-            <p style={{ textAlign: 'left', marginBottom: 0 }}>{DRESS}</p>
+            <p style={{ textAlign: 'left', marginBottom: 0 }}>{Constants.DRESS}</p>
             </UncontrolledTooltip>
           </Form.Label><br />
           <Form.Check
@@ -452,14 +454,14 @@ const DnD = () => {
         <>
         <FormField>
         <Form.Label>Menu Choice<sup>*</sup>
-        {selectGroup.value !== OTHER_OPTION && 
+        {selectGroup.value !== Constants.OTHER_OPTION && 
         <span>
           <ToolTipIcon id='fourth' />
           <UncontrolledTooltip
             placement='right'
             target='fourth'
           >
-          <p style={{ textAlign:'left', marginBottom: 0 }}>{MENU}</p>
+          <p style={{ textAlign:'left', marginBottom: 0 }}>{Constants.MENU}</p>
           </UncontrolledTooltip>
           </span>}
         </Form.Label>
@@ -492,7 +494,7 @@ const DnD = () => {
             placement='bottom'
             target='tooltip'
           >
-          <p style={{ textAlign: 'left', marginBottom: 0 }}>{DRESS}</p>
+          <p style={{ textAlign: 'left', marginBottom: 0 }}>{Constants.DRESS}</p>
           </UncontrolledTooltip>
         </Form.Label><br />
         <Form.Check
