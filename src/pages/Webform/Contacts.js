@@ -233,6 +233,12 @@ const FormButton = styled(Button)`
   background: #722ED1; 
   border-radius: 0.625rem;
   cursor: pointer;
+  &:hover {
+    background: #722ED1; 
+  }
+  &:active {
+    background: #722ED1; 
+  }
 `
 
 const FormField = styled.div`
