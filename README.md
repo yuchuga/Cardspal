@@ -22,7 +22,7 @@ The build is minified and the filenames include the hashes.\
 
 ### `npm run eject`
 
-Extracts all hidden build configuration (webpack, Babel, ESLint) for CRA app into your project root folder with new config & scripts folders. Allows advanced config modification, but 1-way operation!
+Extracts all hidden build configuration (webpack, Babel, ESLint) for CRA app into your project root folder with new config & scripts folders. Allows advanced config modification but is a one-way operation!
 
 ### Code Splitting
 
